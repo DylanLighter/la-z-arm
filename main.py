@@ -14,6 +14,9 @@ def clearConsole():
 
 cap = cv2.VideoCapture(0)
 
+# Set to True to disable motor movement
+reportOnly = True
+
 while cap.isOpened():
 	success, image = cap.read()
 	if not success:
@@ -28,13 +31,22 @@ while cap.isOpened():
 	pose_landmarks = processPose(image)
 
 	clearConsole()
-
-	if hand_landmarks:
-		landmark = hand_landmarks.landmark
-		for i in range(5):
-			rotateJoint(i, getCurlPercentage(landmark, i))
+	
+	if reportOnly:
+		if hand_landmarks:
+			print(getJointDataString(hand_landmarks.landmark, 0, 5))
+		if pose_landmarks:
+			print(getJointDataString(pose_landmarks.landmark, 5, 6))
 	else:
-		print('No hand detected.')
+		if hand_landmarks:
+			landmark = hand_landmarks.landmark
+			for i in range(5):
+				rotateJoint(i, getCurlPercentage(landmark, i))
+		else:
+			print('No hand detected.')
+
+		if pose_landmarks:
+			rotateJoint(5, getCurlPercentage(pose_landmarks.landmark, 5))
 
 	image.flags.writeable = True
 	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
