@@ -24,7 +24,7 @@ class Joint:
 	
 	def getCurlPercentage(self, landmarks):
 		p = map(self.getCurlAngle(landmarks), self.degMin, self.degMax, 100, 0)
-		return np.rint(np.clip(p, 0, 100))
+		return np.clip(p, 0, 100)
 
 joints = [
 Joint('Thumb', 120, 150, 1, 4),
@@ -62,7 +62,7 @@ def getJointDataString(landmarks):
 	resultRaw = ""
 
 	for joint in joints:
-		percentage = joint.getCurlPercentage(landmarks)
+		percentage = np.rint(joint.getCurlPercentage(landmarks))
 		angle = np.rint(joint.getCurlAngle(landmarks))
 		start = f"| {joint.label}:"
 
