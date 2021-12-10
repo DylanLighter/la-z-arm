@@ -3,12 +3,12 @@ import math
 import cv2
 
 class Joint:
-	def __init__(self, label, degMin, degMax, index, endOffset = 3, base = 0):
+	def __init__(self, label, degMin, degMax, index, end, base = 0):
 		self.label = label
 		self.degMin = degMin
 		self.degMax = degMax
 		self.index = index
-		self.end = index + endOffset
+		self.end = end
 		self.base = base
 	
 	def getCurlPercentage(self, angle):
@@ -16,12 +16,13 @@ class Joint:
 		return np.rint(np.clip(p, 0, 100))
 
 joints = [
-# Finger data is represented with: label, minimum angle, maximum angle, and index of knuckle's control point
-Joint('Thumb', 120, 150, 1),
-Joint('Index', 50, 170, 5),
-Joint('Middle', 30, 170, 9),
-Joint('Ring', 30, 170, 13),
-Joint('Pinky', 60, 170, 17),
+Joint('Thumb', 120, 150, 1, 4),
+Joint('Index', 50, 170, 5, 8),
+Joint('Middle', 30, 170, 9, 12),
+Joint('Ring', 30, 170, 13, 16),
+Joint('Pinky', 60, 170, 17, 20),
+
+Joint('R Elbow Bend', 60, 160, 14, 16, 12)
 ]
 
 def magnitude(v1, v2):
