@@ -45,9 +45,6 @@ while cap.isOpened():
 		else:
 			print('No hand detected.')
 
-		if pose_landmarks:
-			rotateJoint(5, getCurlPercentage(pose_landmarks.landmark, 5))
-
 	image.flags.writeable = True
 	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
