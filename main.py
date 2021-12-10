@@ -15,7 +15,7 @@ def clearConsole():
 cap = cv2.VideoCapture(0)
 
 # Set to True to disable motor movement
-reportOnly = True
+reportOnly = False
 
 while cap.isOpened():
 	success, image = cap.read()
