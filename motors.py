@@ -14,7 +14,7 @@ bus.write_byte_data(addr, 0xfe, 0x79) # set 50Hz
 bus.write_byte_data(addr, 0, 0x20)
 
 # set start times to 0
-for ch in range(5):
+for ch in range(16):
 	bus.write_word_data(addr, 0x06 + ch * 4, 0)
 
 rangeMin = -90
