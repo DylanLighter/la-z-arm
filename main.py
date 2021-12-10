@@ -36,12 +36,12 @@ while cap.isOpened():
 	
 	if reportOnly:
 		if hand_landmarks:
-			print(getJointDataString(hand_landmarks.landmark))
+			print(joints.getJointDataString(hand_landmarks.landmark))
 	else:
 		if hand_landmarks:
 			landmark = hand_landmarks.landmark
 			for i in range(5):
-				motors.rotateJoint(i, getCurlPercentage(landmark, i))
+				motors.rotateJoint(i, joints.getCurlPercentage(landmark, i))
 		else:
 			print('No hand detected.')
 
