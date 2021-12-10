@@ -10,9 +10,20 @@ class Joint:
 		self.index = index
 		self.end = end
 		self.base = base
+
+	def getCurlAngle(self, landmarks):
+		w = landmarks[self.base]
+		k = landmarks[self.index]
+		f = landmarks[self.end]
+		
+		c = magnitude(f, k)
+		b = magnitude(w, k)
+		a = magnitude(f, w)
+		
+		return np.rad2deg(np.arccos((-a ** 2 + b ** 2 + c ** 2)/(2 * b * c)))
 	
-	def getCurlPercentage(self, angle):
-		p = map(angle, self.degMin, self.degMax, 100, 0)
+	def getCurlPercentage(self, landmarks):
+		p = map(self.getCurlAngle(landmarks), self.degMin, self.degMax, 100, 0)
 		return np.rint(np.clip(p, 0, 100))
 
 joints = [
@@ -21,8 +32,6 @@ Joint('Index', 50, 170, 5, 8),
 Joint('Middle', 30, 170, 9, 12),
 Joint('Ring', 30, 170, 13, 16),
 Joint('Pinky', 60, 170, 17, 20),
-
-Joint('R Elbow Bend', 60, 160, 14, 16, 12)
 ]
 
 def magnitude(v1, v2):
@@ -35,8 +44,7 @@ def getCurlAngle(landmarks, jointIndex):
 
 def getCurlPercentage(landmarks, jointIndex):
 	joint = joints[jointIndex]
-	angle = getCurlAngleByJoint(landmarks, joint)
-	return joint.getCurlPercentage(angle)
+	return joint.getCurlPercentage(landmarks)
 
 def getCurlAngleByJoint(landmarks, joint):
 	w = landmarks[joint.base]
@@ -55,9 +63,8 @@ def getJointDataString(landmarks, start, end):
 	resultRaw = ""
 
 	for joint in joints[start:end]:
-		angle = getCurlAngleByJoint(landmarks, joint)
-		percentage = joint.getCurlPercentage(angle)
-		angle = np.rint(angle)
+		percentage = joint.getCurlPercentage(landmarks)
+		angle = np.rint(joint.getCurlAngle(landmarks))
 		start = f"| {joint.label}:"
 
 		result += start + f"{percentage}%".center(8) + '|'
