@@ -34,9 +34,7 @@ while cap.isOpened():
 	
 	if reportOnly:
 		if hand_landmarks:
-			print(getJointDataString(hand_landmarks.landmark, 0, 5))
-		if pose_landmarks:
-			print(getJointDataString(pose_landmarks.landmark, 5, 6))
+			print(getJointDataString(hand_landmarks.landmark))
 	else:
 		if hand_landmarks:
 			landmark = hand_landmarks.landmark

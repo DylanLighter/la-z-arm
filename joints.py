@@ -57,12 +57,11 @@ def getCurlAngleByJoint(landmarks, joint):
 	
 	return np.rad2deg(np.arccos((-a ** 2 + b ** 2 + c ** 2)/(2 * b * c)))
 
-def getJointDataString(landmarks, start, end):
-
+def getJointDataString(landmarks):
 	result = "### Joint Curl Data: ###\n"
 	resultRaw = ""
 
-	for joint in joints[start:end]:
+	for joint in joints:
 		percentage = joint.getCurlPercentage(landmarks)
 		angle = np.rint(joint.getCurlAngle(landmarks))
 		start = f"| {joint.label}:"
