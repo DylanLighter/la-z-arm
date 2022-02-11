@@ -19,7 +19,7 @@ while cap.isOpened():
 	if not hand_landmarks:
 		continue
 	
-	landmark = landmarks.landmark
+	landmark = hand_landmarks.landmark
 
 	print(getFingerDataString(landmark))
 	rotateFinger(0, getCurlPercentage(landmark, 0))
