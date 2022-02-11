@@ -8,13 +8,10 @@ pose = mp_pose.Pose(
 		min_tracking_confidence=0.5)
 
 def processPose(image):
-	# To improve performance, optionally mark the image as not writeable to
-	# pass by reference.
 	image.flags.writeable = False
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	results = pose.process(image)
 
-	# Draw the pose annotation on the image.
 	image.flags.writeable = True
 	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
