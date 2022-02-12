@@ -23,15 +23,15 @@ while cap.isOpened():
 	
 	hand_landmarks = processHand(image)
 
-	if not hand_landmarks:
-		continue
-	
-	landmark = hand_landmarks.landmark
-
 	clearConsole()
-	print(getFingerDataString(landmark))
-	rotateFinger(0, getCurlPercentage(landmark, 0))
-	rotateFinger(1, getCurlPercentage(landmark, 1))
+
+	if hand_landmarks:
+		landmark = hand_landmarks.landmark
+		print(getFingerDataString(landmark))
+		rotateFinger(0, getCurlPercentage(landmark, 0))
+		rotateFinger(1, getCurlPercentage(landmark, 1))
+	else:
+		print('No hand detected.')
 
 	# Flip the image horizontally for a selfie-view display.
 	image = cv2.flip(image, 1)
