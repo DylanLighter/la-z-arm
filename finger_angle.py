@@ -1,6 +1,5 @@
 import numpy as np
 import math
-import os
 import cv2
 
 class Finger:
@@ -67,7 +66,6 @@ def getFingerDataString(landmarks):
 
 		result += start + f"{percentage}%".center(8) + '|'
 		resultRaw += start + f"{angle}º".center(8) + '|'
-	os.system('clear')
 
 	return result + '\n' + resultRaw
 

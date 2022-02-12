@@ -1,9 +1,16 @@
 import cv2
+import os
 
 from finger_angle import *
 from motors import *
 from hands import *
 from pose import *
+
+def clearConsole():
+    command = 'clear'
+    if os.name in ('nt', 'dos'):  # cls for Windows (for testing off rig)
+        command = 'cls'
+    os.system(command)
 
 cap = cv2.VideoCapture(0)
 
@@ -21,6 +28,7 @@ while cap.isOpened():
 	
 	landmark = hand_landmarks.landmark
 
+	clearConsole()
 	print(getFingerDataString(landmark))
 	rotateFinger(0, getCurlPercentage(landmark, 0))
 	rotateFinger(1, getCurlPercentage(landmark, 1))
