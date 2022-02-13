@@ -21,6 +21,9 @@ while cap.isOpened():
 		# If loading a video, use 'break' instead of 'continue'.
 		continue
 	
+	image.flags.writeable = False
+	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+	
 	hand_landmarks = processHand(image)
 
 	clearConsole()
@@ -32,6 +35,11 @@ while cap.isOpened():
 		rotateFinger(1, getCurlPercentage(landmark, 1))
 	else:
 		print('No hand detected.')
+
+	image.flags.writeable = True
+	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+	drawHandLandmarks(image, hand_landmarks)
 
 	# Flip the image horizontally for a selfie-view display.
 	image = cv2.flip(image, 1)
