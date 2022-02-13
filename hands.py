@@ -10,20 +10,17 @@ hands = mp_hands.Hands(
 	min_tracking_confidence=0.5)
 
 def processHand(image):
-	image.flags.writeable = False
-	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	results = hands.process(image)
-
-	image.flags.writeable = True
-	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
 	if results.multi_hand_landmarks:
 		hand_landmarks = results.multi_hand_landmarks[0]
-		mp_drawing.draw_landmarks(
-			image,
-			hand_landmarks,
-			mp_hands.HAND_CONNECTIONS)
 		
 		return hand_landmarks
 	else:
 		return None
+
+def drawHandLandmarks(bgrIm, landmarkSet):
+	mp_drawing.draw_landmarks(
+		bgrIm,
+		landmarkSet,
+		mp_hands.HAND_CONNECTIONS)

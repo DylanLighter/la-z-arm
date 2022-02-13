@@ -8,14 +8,10 @@ pose = mp_pose.Pose(
 		min_tracking_confidence=0.5)
 
 def processPose(image):
-	image.flags.writeable = False
-	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-	results = pose.process(image)
+	return pose.process(image).pose_landmarks
 
-	image.flags.writeable = True
-	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
+def drawPoseLandmarks(bgrIm, landmarkSet):
 	mp_drawing.draw_landmarks(
-		image,
-		results.pose_landmarks.landmark,
+		bgrIm,
+		landmarkSet.landmark,
 		mp_pose.POSE_CONNECTIONS)
