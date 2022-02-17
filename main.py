@@ -30,9 +30,8 @@ while cap.isOpened():
 
 	if hand_landmarks:
 		landmark = hand_landmarks.landmark
-		print(getFingerDataString(landmark))
-		rotateFinger(0, getCurlPercentage(landmark, 0))
-		rotateFinger(1, getCurlPercentage(landmark, 1))
+		for i in range(5);
+			rotateFinger(i, getCurlPercentage(landmark, i))
 	else:
 		print('No hand detected.')
 
