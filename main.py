@@ -30,7 +30,7 @@ while cap.isOpened():
 
 	if hand_landmarks:
 		landmark = hand_landmarks.landmark
-		for i in range(5);
+		for i in range(5):
 			rotateFinger(i, getCurlPercentage(landmark, i))
 	else:
 		print('No hand detected.')
@@ -46,6 +46,7 @@ while cap.isOpened():
 	cv2.imshow('MediaPipe Hands', image)
 
 	if cv2.waitKey(5) & 0xFF == 27:
+		resetFingers()
 		break
 
 cap.release()
