@@ -11,7 +11,7 @@ class Finger:
 		self.end = self.index + 3
 	
 	def getCurlPercentage(self, angle):
-		p = map(angle, self.degMin, self.degMax, 0, 100)
+		p = map(angle, self.degMin, self.degMax, 100, 0)
 		return np.rint(np.clip(p, 0, 100))
 
 fingers = [

@@ -28,9 +28,6 @@ def rotate(channel, deg):
 	bus.write_word_data(addr, channel + 2, int(np.rint(209 + signal)))
 
 def rotateFinger(index, curl):
-	if index % 2 == 0:
-		curl = 100 - curl
-
 	if index == 0: # thumb needs to pull half as much
 		curl /= 2
 
