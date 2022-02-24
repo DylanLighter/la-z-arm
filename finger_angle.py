@@ -23,12 +23,6 @@ Finger('Ring', 30, 170, 13),
 Finger('Pinky', 60, 170, 17),
 ]
 
-# Stuff for putting data on the camera output
-lineHeight = 50
-textColor = (0, 255, 255)
-font = cv2.FONT_HERSHEY_PLAIN
-textSize = 0.5
-
 def magnitude(v1, v2):
 	return math.sqrt(
 	(v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2 + (v1.z - v2.z) ** 2
@@ -68,25 +62,6 @@ def getFingerDataString(landmarks):
 		resultRaw += start + f"{angle}º".center(8) + '|'
 
 	return result + '\n' + resultRaw
-
-def putFingerData(landmarks, image):
-	
-	sizeX = image.shape[1]
-	sizeY = image.shape[0]
-
-	image = cv2.flip(image, 1)
-
-	for finger in fingers:
-		angle = np.rad2deg(getCurlAngleByFinger(landmarks, finger))
-		percentage = finger.getCurlPercentage(angle)
-		angle = np.rint(angle)
-
-		fingerEndPos = landmarks[finger.end]
-		x = np.rint(sizeX * (1 - fingerEndPos.x))
-		y = np.rint(sizeY * fingerEndPos.y)
-		cv2.putText(image, f"{percentage}% | {angle}d", (50, 50), font, textSize, textColor)
-	
-	return cv2.flip(image, 1)
 
 def map(x, in_min, in_max, out_min, out_max):
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
