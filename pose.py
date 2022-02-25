@@ -13,5 +13,5 @@ def processPose(image):
 def drawPoseLandmarks(bgrIm, landmarkSet):
 	mp_drawing.draw_landmarks(
 		bgrIm,
-		landmarkSet.landmark,
+		landmarkSet,
 		mp_pose.POSE_CONNECTIONS)
