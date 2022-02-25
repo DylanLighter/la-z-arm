@@ -2,25 +2,26 @@ import numpy as np
 import math
 import cv2
 
-class Finger:
-	def __init__(self, label, degMin, degMax, index):
+class Joint:
+	def __init__(self, label, degMin, degMax, index, endOffset = 3, base = 0):
 		self.label = label
 		self.degMin = degMin
 		self.degMax = degMax
 		self.index = index
-		self.end = self.index + 3
+		self.end = index + endOffset
+		self.base = base
 	
 	def getCurlPercentage(self, angle):
 		p = map(angle, self.degMin, self.degMax, 100, 0)
 		return np.rint(np.clip(p, 0, 100))
 
-fingers = [
+joints = [
 # Finger data is represented with: label, minimum angle, maximum angle, and index of knuckle's control point
-Finger('Thumb', 120, 150, 1),
-Finger('Index', 50, 170, 5),
-Finger('Middle', 30, 170, 9),
-Finger('Ring', 30, 170, 13),
-Finger('Pinky', 60, 170, 17),
+Joint('Thumb', 120, 150, 1),
+Joint('Index', 50, 170, 5),
+Joint('Middle', 30, 170, 9),
+Joint('Ring', 30, 170, 13),
+Joint('Pinky', 60, 170, 17),
 ]
 
 def magnitude(v1, v2):
@@ -28,18 +29,18 @@ def magnitude(v1, v2):
 	(v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2 + (v1.z - v2.z) ** 2
 	)
 
-def getCurlAngle(landmarks, fingerIndex):
-	return getCurlAngleByFinger(landmarks, fingers[fingerIndex])
+def getCurlAngle(landmarks, jointIndex):
+	return getCurlAngleByJoint(landmarks, joints[jointIndex])
 
-def getCurlPercentage(landmarks, fingerIndex):
-	finger = fingers[fingerIndex]
-	angle = np.rad2deg(getCurlAngleByFinger(landmarks, finger))
-	return finger.getCurlPercentage(angle)
+def getCurlPercentage(landmarks, jointIndex):
+	joint = joints[jointIndex]
+	angle = np.rad2deg(getCurlAngleByJoint(landmarks, joint))
+	return joint.getCurlPercentage(angle)
 
-def getCurlAngleByFinger(landmarks, finger):
-	w = landmarks[0]
-	k = landmarks[finger.index]
-	f = landmarks[finger.end]
+def getCurlAngleByJoint(landmarks, joint):
+	w = landmarks[joint.base]
+	k = landmarks[joint.index]
+	f = landmarks[joint.end]
 	
 	c = magnitude(f, k)
 	b = magnitude(w, k)
@@ -47,14 +48,14 @@ def getCurlAngleByFinger(landmarks, finger):
 	
 	return np.arccos((-a ** 2 + b ** 2 + c ** 2)/(2 * b * c))
 
-def getFingerDataString(landmarks):
+def getJointDataString(landmarks):
 
-	result = "### Finger Curl Data: ###\n"
+	result = "### Joint Curl Data: ###\n"
 	resultRaw = ""
 
-	for finger in fingers:
-		angle = np.rad2deg(getCurlAngleByFinger(landmarks, finger))
-		percentage = finger.getCurlPercentage(angle)
+	for joint in joints:
+		angle = np.rad2deg(getCurlAngleByJoint(landmarks, joint))
+		percentage = joint.getCurlPercentage(angle)
 		angle = np.rint(angle)
 		start = f"| {finger.label}:"
 

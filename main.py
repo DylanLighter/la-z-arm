@@ -1,7 +1,7 @@
 import cv2
 import os
 
-from finger_angle import *
+from joints import *
 from motors import *
 from hands import *
 from pose import *
@@ -25,13 +25,14 @@ while cap.isOpened():
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 	
 	hand_landmarks = processHand(image)
+	pose_landmarks = processPose(image)
 
 	clearConsole()
 
 	if hand_landmarks:
 		landmark = hand_landmarks.landmark
 		for i in range(5):
-			rotateFinger(i, getCurlPercentage(landmark, i))
+			rotateJoint(i, getCurlPercentage(landmark, i))
 	else:
 		print('No hand detected.')
 
@@ -39,6 +40,7 @@ while cap.isOpened():
 	image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
 	drawHandLandmarks(image, hand_landmarks)
+	drawPoseLandmarks(image, pose_landmarks)
 
 	# Flip the image horizontally for a selfie-view display.
 	image = cv2.flip(image, 1)
@@ -46,7 +48,7 @@ while cap.isOpened():
 	cv2.imshow('MediaPipe Hands', image)
 
 	if cv2.waitKey(5) & 0xFF == 27:
-		resetFingers()
+		resetMotors()
 		break
 
 cap.release()

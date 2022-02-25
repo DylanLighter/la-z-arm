@@ -21,13 +21,14 @@ rangeMin = -90
 rangeMax = 90
 
 def rotate(channel, deg):
-	if channel % 2 == 0:
+	# Odd finger motors flip rotation
+	if channel < 5 and channel % 2 == 0:
 		deg *= -1
 	channel = 0x06 + channel * 4
 	signal = 59 + deg * 2.3
 	bus.write_word_data(addr, channel + 2, int(np.rint(209 + signal)))
 
-def rotateFinger(index, curl):
+def rotateJoint(index, curl):
 	if index == 0: # thumb needs to pull half as much
 		curl /= 2
 
@@ -35,8 +36,8 @@ def rotateFinger(index, curl):
 	rotate(index, deg)
 	print(f"rotating {deg} at {curl}% curl")
 
-def resetFingers():
-	for i in range(5):
+def resetMotors():
+	for i in range(16):
 		rotate(i, rangeMin)
 
-resetFingers()
+resetMotors()
