@@ -2,6 +2,7 @@
 
 import cv2
 import os
+import sys
 
 import joints
 import motors
@@ -16,8 +17,8 @@ def clearConsole():
 
 cap = cv2.VideoCapture(0)
 
-# Set to True to disable motor movement
-reportOnly = False
+# Use first argument to decide to report only
+reportOnly = sys.argv[1] == "--report" or "-r"
 
 while cap.isOpened():
 	success, image = cap.read()
