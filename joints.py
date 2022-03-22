@@ -26,7 +26,7 @@ class Joint:
 		p = map(self.getCurlAngle(landmarks), self.degMin, self.degMax, 100, 0)
 		return np.clip(p, 0, 100)
 
-joints = [
+fingers = [
 Joint('Thumb', 120, 150, 1, 4),
 Joint('Index', 50, 170, 5, 8),
 Joint('Middle', 30, 170, 9, 12),
@@ -39,29 +39,11 @@ def magnitude(v1, v2):
 	(v1.x - v2.x) ** 2 + (v1.y - v2.y) ** 2 + (v1.z - v2.z) ** 2
 	)
 
-def getCurlAngle(landmarks, jointIndex):
-	return getCurlAngleByJoint(landmarks, joints[jointIndex])
-
-def getCurlPercentage(landmarks, jointIndex):
-	joint = joints[jointIndex]
-	return joint.getCurlPercentage(landmarks)
-
-def getCurlAngleByJoint(landmarks, joint):
-	w = landmarks[joint.base]
-	k = landmarks[joint.index]
-	f = landmarks[joint.end]
-	
-	c = magnitude(f, k)
-	b = magnitude(w, k)
-	a = magnitude(f, w)
-	
-	return np.rad2deg(np.arccos((-a ** 2 + b ** 2 + c ** 2)/(2 * b * c)))
-
 def getJointDataString(landmarks):
 	result = "### Joint Curl Data: ###\n"
 	resultRaw = ""
 
-	for joint in joints:
+	for joint in fingers:
 		percentage = np.rint(joint.getCurlPercentage(landmarks))
 		angle = np.rint(joint.getCurlAngle(landmarks))
 		start = f"| {joint.label}:"
