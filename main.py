@@ -18,7 +18,7 @@ def clearConsole():
 cap = cv2.VideoCapture(0)
 
 # Use first argument to decide to report only
-reportOnly = sys.argv[1] == "--report" or "-r"
+reportOnly = len(sys.argv) > 1 and (sys.argv[1] == "--report" or "-r")
 
 while cap.isOpened():
 	success, image = cap.read()
