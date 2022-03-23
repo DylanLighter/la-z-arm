@@ -15,17 +15,12 @@ def clearConsole():
         command = 'cls'
     os.system(command)
 
-cap = cv2.VideoCapture(0)
-
-# Use first argument to decide to report only
-reportOnly = len(sys.argv) > 1 and (sys.argv[1] == "--report" or "-r")
-
-while cap.isOpened():
+def readFrame(cap):
 	success, image = cap.read()
 	if not success:
 		print("Ignoring empty camera frame.")
 		# If loading a video, use 'break' instead of 'continue'.
-		continue
+		return
 	
 	image.flags.writeable = False
 	image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -57,8 +52,16 @@ while cap.isOpened():
 
 	cv2.imshow('MediaPipe Hands', image)
 
-	if cv2.waitKey(5) & 0xFF == 27:
-		motors.resetMotors()
-		break
+if __name__ == "__main__":
+	cap = cv2.VideoCapture(0)
 
-cap.release()
+	# Use first argument to decide to report only
+	reportOnly = any(x in sys.argv for x in ["-r", "--report"])
+
+	while cap.isOpened():
+		readFrame(cap)
+		if cv2.waitKey(5) & 0xFF == 27:
+			motors.resetMotors()
+			break
+
+	cap.release()
