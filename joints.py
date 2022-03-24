@@ -20,7 +20,7 @@ class Joint:
 			lm[self.base])
 
 	def getCurlPercentage(self, lm):
-		return self.angleToPercent(self.getCurlangle(lm))
+		return self.angleToPercent(self.getCurlAngle(lm))
 	
 	def angleToPercent(self, angle):
 		p = em.map(angle, self.degMin, self.degMax, 100, 0)
