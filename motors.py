@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import smbus
 import numpy as np
 import time
@@ -29,8 +31,8 @@ def rotate(channel, deg):
 	bus.write_word_data(addr, channel + 2, int(np.rint(209 + signal)))
 
 def rotateJoint(index, curl):
-	if index == 0: # thumb needs to pull half as much
-		curl /= 2
+	#if index == 0: # thumb needs to pull half as much
+	#	curl /= 2
 
 	deg = rangeMin + (rangeMax - rangeMin) * (curl / 100)
 	rotate(index, deg)
@@ -41,3 +43,21 @@ def resetMotors():
 		rotate(i, rangeMin)
 
 resetMotors()
+
+if __name__ == "__main__":
+	print("==Manual motor control==")
+	print("i [channel] - select channel")
+	print("[# degrees] - rotate current motor")
+	print("Enter nothing to exit")
+	currCh = 0
+	while True:
+		command = input()
+		if command == "":
+			resetMotors()
+			break
+		elif command.startswith("i") and command[2:].isnumeric():
+			currCh = int(command[2:])
+		elif command.isnumeric():
+			rotate(currCh, int(command))
+		else:
+			print("Invalid command.")
