@@ -56,5 +56,7 @@ if __name__ == "__main__":
 			currCh = int(command[2:])
 		elif command.isnumeric():
 			rotate(currCh, int(command))
+		elif command.startswith("-") and command[1:].isnumeric():
+			rotate(currCh, -int(command[1:]))
 		else:
 			print("Invalid command.")
