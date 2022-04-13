@@ -5,7 +5,6 @@ import os
 import sys
 
 import joints
-import motors
 import hands
 import pose
 
@@ -56,7 +55,11 @@ if __name__ == "__main__":
 	cap = cv2.VideoCapture(0)
 
 	# Use first argument to decide to report only
-	reportOnly = any(x in sys.argv for x in ["-r", "--report"])
+	# Always use report-only if in Windows
+	reportOnly = os.name in ('nt', 'dos') or any(x in sys.argv for x in ["-r", "--report"])
+
+	if not reportOnly:
+		import motors
 
 	while cap.isOpened():
 		readFrame(cap)
