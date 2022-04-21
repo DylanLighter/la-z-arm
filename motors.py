@@ -31,6 +31,7 @@ def rotate(channel, deg):
 	bus.write_word_data(addr, channel + 2, int(np.rint(209 + signal)))
 
 def rotateJoint(index, curl):
+	curl = np.clip(curl, 0, 100)
 	deg = rangeMin + (rangeMax - rangeMin) * (curl / 100)
 	rotate(index, deg)
 	print(f"rotating {deg} at {curl}% curl")
