@@ -18,9 +18,12 @@ class Joint:
 			lm[self.index],
 			lm[self.end],
 			lm[self.base])
-	
+
 	def getCurlPercentage(self, lm):
-		p = em.map(self.getCurlAngle(lm), self.degMin, self.degMax, 100, 0)
+		return self.angleToPercent(self.getCurlAngle(lm))
+	
+	def angleToPercent(self, angle):
+		p = em.map(angle, self.degMin, self.degMax, 100, 0)
 		return np.clip(p, 0, 100)
 
 fingers = [
@@ -36,8 +39,8 @@ def getJointDataString(landmarks):
 	resultRaw = ""
 
 	for joint in fingers:
-		percentage = np.rint(joint.getCurlPercentage(landmarks))
 		angle = np.rint(joint.getCurlAngle(landmarks))
+		percentage = np.rint(joint.angleToPercent(angle))
 		start = f"| {joint.label}:"
 
 		result += start + f"{percentage}%".center(8) + '|'
