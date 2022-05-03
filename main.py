@@ -7,6 +7,7 @@ import sys
 import joints
 import hands
 import pose
+import wrist
 
 def clearConsole():
     command = 'clear'
@@ -28,15 +29,22 @@ def readFrame(cap):
 	pose_landmarks = pose.processPose(image)
 
 	clearConsole()
+
+	if hand_landmarks: handlm = hand_landmarks.landmark
+	if pose_landmarks: poselm = pose_landmarks.landmark
 	
 	if reportOnly:
 		if hand_landmarks:
-			print(joints.getJointDataString(hand_landmarks.landmark))
+			print(joints.getJointDataString(handlm))
+			if pose_landmarks:
+				print(f"Wrist: {wrist.wrist.getCurlPercentage(poselm, handlm)}")
+				print(f"%: {wrist.wrist.getCurlAngle(poselm, handlm)}")
 	else:
 		if hand_landmarks:
-			landmark = hand_landmarks.landmark
 			for i in range(5):
-				motors.rotateJoint(i, joints.fingers[i].getCurlPercentage(landmark))
+				motors.rotateJoint(i, joints.fingers[i].getCurlPercentage(handlm))
+			if pose_landmarks:
+				motors.rotateJoint(5, wrist.wrist.getCurlPercentage(poselm, handlm))
 		else:
 			print('No hand detected.')
 
